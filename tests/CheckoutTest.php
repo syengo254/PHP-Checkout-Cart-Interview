@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Lib\CheckoutStrategies\ChristmasDiscountStrategy;
 use App\Lib\CheckoutStrategies\DefaultStrategy;
 use App\v1\Checkout;
 use PHPUnit\Framework\TestCase;
@@ -45,5 +46,20 @@ final class CheckoutTest extends TestCase
     $total = $co->total;
 
     $this->assertEquals(22.45, $total);
+  }
+
+  public function testXmasDiscountStrategy(): void
+  {
+    $pricing_rules = new ChristmasDiscountStrategy();
+    $basket = ["FR1", "SR1", "CF1"];
+    $co = new Checkout($pricing_rules);
+
+    foreach ($basket as $item) {
+      $co->scan($item);
+    }
+
+    $total = $co->total;
+
+    $this->assertEquals(13.604, $total);
   }
 }
