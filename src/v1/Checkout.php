@@ -12,9 +12,8 @@ class Checkout
 
   public $total = 0;
 
-  public function __construct(CheckoutStrategyInterface $pricing_rules)
+  public function __construct(private CheckoutStrategyInterface $pricing_rules)
   {
-    $this->pricing_rules = $pricing_rules;
   }
 
   public function set_pricing_rules(CheckoutStrategyInterface $pricing_rules): void
