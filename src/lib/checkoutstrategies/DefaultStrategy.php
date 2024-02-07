@@ -14,7 +14,7 @@ class DefaultStrategy implements CheckoutStrategyInterface
   private string $strategy_name = "Default strategy";
   private float $strawberry_discount_price = 4.50;
   private float $strawberry_discount_qty = 3;
-  private string $buy_get_one_free_code = "FR1";
+  private array $buy_get_one_free_codes = ["FR1"]; // can add as you wish
 
   // calculate this strategy's total
   public function calculate_total(...$items): float
@@ -24,7 +24,7 @@ class DefaultStrategy implements CheckoutStrategyInterface
     foreach ($items as $key => $quantity) {
       $product = (new Products())->get_product($key);
 
-      if ($key == $this->buy_get_one_free_code) {
+      if (in_array($key, $this->buy_get_one_free_codes)) {
         $total += (floor($quantity / 2) * $product["price"]) + ($quantity % 2 * $product["price"]);
       } elseif ($key == "SR1" && $quantity >= $this->strawberry_discount_qty) {
         $total += $quantity * $this->strawberry_discount_price;
